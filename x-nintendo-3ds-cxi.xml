@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+<mime-type type="application/x-nintendo-3ds-cxi">
+  <comment>Nintendo 3ds cxi file</comment>
+  <glob pattern="*.cxi"/>
+</mime-type>
+</mime-info>

@@ -1,0 +1,39 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+import os
+import sys
+
+from argparse import ArgumentParser
+parser = ArgumentParser()
+parser.add_argument('-s', type=int, default=256, nargs='?')
+parser.add_argument('rom_path', type=str)
+parser.add_argument('thumb_path', type=str)
+args = parser.parse_args()
+
+ext = os.path.splitext(args.rom_path.lower())[-1]
+if ext == '.3ds' or ext == '.cci':
+	from pyctr.type.cci import CCIReader as Reader
+	from pyctr.type.cci import CCISection as Section
+elif ext == '.cia':
+	from pyctr.type.cia import CIAReader as Reader
+	from pyctr.type.cia import CIASection as Section
+elif ext == '.cxi':
+	from pyctr.type.ncch import NCCHReader as Reader
+	from pyctr.type.ncch import NCCHSection as Section
+else:
+	exit()
+	
+# Open the file for reading. This will parse the ticket, title metadata, and contents including NCCH, ExeFS, and RomFS.
+# If the file is encrypted and the appropriate keys are supplied, decryption is done on the fly.
+with Reader(args.rom_path) as rom:
+    if ext == '.cxi':
+        icon = rom.exefs.icon.icon_large
+    else: #'.3ds'/'.cia'
+        icon = rom.contents[Section.Application].exefs.icon.icon_large
+        
+    new_dimensions = (args.s, args.s)
+    if icon.size != new_dimensions:
+        icon = icon.resize(new_dimensions)
+    icon.save(args.thumb_path, 'PNG')
+

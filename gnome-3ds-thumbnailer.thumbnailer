@@ -1,0 +1,4 @@
+[Thumbnailer Entry]
+TryExec=/usr/bin/gnome-3ds-thumbnailer
+Exec=/usr/bin/gnome-3ds-thumbnailer -s %s %i %o
+MimeType=application/x-nintendo-3ds-cia;application/x-nintendo-3ds-rom;application/x-nintendo-3ds-cxi;
